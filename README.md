@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# تطبيق بروز (Boroz) - مساعد الذكاء الاصطناعي وتهيئة الـ SEO لتجار سلة
 
-## Getting Started
+بروز هو تطبيق ذكاء اصطناعي (SaaS) موجه لتجار منصة سلة، يساعدهم على تحسين أوصاف المنتجات وجاهزيتها لمحركات البحث (SEO) لظهور أوضح وأسلوب تسويقي أفضل.
 
-First, run the development server:
+التطبيق مبني باستخدام تقنيات حديثة وآمنة بالكامل:
+- **Next.js 14+ (App Router)**
+- **TypeScript**
+- **Tailwind CSS (v4)**
+- **Prisma ORM**
+- **PostgreSQL (Neon / Vercel Postgres)**
 
+---
+
+## الميزات الأساسية
+1. **تحليل وتقييم الـ SEO:** حساب درجة الجاهزية التقريبية لمحركات البحث (SEO Score) بناءً على مقاييس فنية حقيقية.
+2. **تحسين المحتوى بذكاء:** تحسين صياغة عناوين المنتجات، الأوصاف القصيرة، والأوصاف التفصيلية (HTML)، وتوليد الكلمات المفتاحية والنصوص البديلة للصور (Alt Text).
+3. **تطبيق التعديلات بنقرة واحدة:** مكاملة آمنة مع Salla API لتطبيق التعديلات المعتمدة مباشرة في متجرك.
+4. **أمان معزز:** تشفير تام لرموز الوصول (OAuth Tokens) باستخدام خوارزمية `AES-256-GCM` الآمنة قبل تخزينها.
+5. **وضع التشغيل التجريبي (Mock Mode):** إمكانية تجربة واستعراض كافة ميزات التطبيق محلياً دون الحاجة لقاعدة بيانات فعلية أو حساب مطورين في سلة.
+
+---
+
+## أولاً: طريقة التشغيل محلياً
+
+### 1. تثبيت الحزم:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. إعداد ملف البيئة:
+قم بإنشاء ملف `.env` في الجذر بناءً على قالب `.env.example`:
+```bash
+cp .env.example .env
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. توليد عميل قاعدة البيانات (Prisma Client):
+```bash
+npx prisma generate
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. تشغيل خادم التطوير:
+```bash
+npm run dev
+```
+افتح الرابط [http://localhost:3000](http://localhost:3000) في متصفحك.
 
-## Learn More
+> [!TIP]
+> عند التشغيل لأول مرة، يكون وضع المحاكاة مفعلاً بشكل افتراضي `MOCK_MODE=true`. يتيح لك هذا ربط متجر تجريبي، استعراض قائمة المنتجات، تشغيل الذكاء الاصطناعي، ومعاينة النشر على سلة وتجربة الإعدادات بدون أي إعدادات خارجية.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ثانياً: متغيرات البيئة المطلوبة (Environment Variables)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+تأكد من ضبط هذه المتغيرات في ملف `.env` عند الانتقال للتشغيل الحقيقي `MOCK_MODE=false`:
 
-## Deploy on Vercel
+| المتغير | الوصف | مثال / قيمة افتراضية |
+| :--- | :--- | :--- |
+| `SALLA_CLIENT_ID` | معرف العميل لتطبيقك في سلة | `your_client_id` |
+| `SALLA_CLIENT_SECRET` | المفتاح السري للتطبيق في سلة | `your_client_secret` |
+| `SALLA_REDIRECT_URI` | رابط الرد المعتمد بعد تسجيل الدخول | `https://YOUR_DOMAIN/api/salla/callback` |
+| `SALLA_AUTH_URL` | رابط بوابة التفويض لسلة | `https://accounts.salla.sa/oauth2/auth` |
+| `SALLA_TOKEN_URL` | رابط تبديل وتجديد الرموز لسلة | `https://accounts.salla.sa/oauth2/token` |
+| `SALLA_API_BASE` | رابط واجهة سلة البرمجية للمتاجر | `https://api.salla.dev/admin/v2` |
+| `AI_PROVIDER` | مزود الذكاء الاصطناعي | `openai` |
+| `OPENAI_API_KEY` | مفتاح واجهة OpenAI | `sk-proj-...` |
+| `OPENAI_MODEL` | نموذج الذكاء الاصطناعي المستخدم | `gpt-4o-mini` |
+| `DATABASE_URL` | رابط قاعدة بيانات PostgreSQL | `postgresql://...` |
+| `NEXT_PUBLIC_APP_URL` | الرابط العام لتطبيقك | `https://YOUR_DOMAIN` |
+| `APP_ENCRYPTION_KEY` | مفتاح تشفير التوكنات (32 بايت hex) | `e9bc610118fb37a94770068a0a9117cf664187f54c30b2c15db64f43de909a3c` |
+| `WEBHOOK_SECRET` | المفتاح السري للتحقق من Webhooks سلة | `your_webhook_secret` |
+| `MOCK_MODE` | تفعيل وضع المحاكاة للتشغيل المحلي | `false` (لبيئة الإنتاج) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ثالثاً: الصلاحيات والروابط المطلوبة في سلة
+
+عند إنشاء تطبيقك في **بوابة مطوري سلة (Salla Partners Portal)**، يرجى ضبط الإعدادات التالية:
+
+### 1. الروابط المطلوبة (Integration URLs)
+- **رابط الرد (Callback URL):**
+  `https://YOUR_DOMAIN/api/salla/callback`
+- **رابط التنبيهات (Webhook URL):**
+  `https://YOUR_DOMAIN/api/salla/webhook`
+- **رابط الإعدادات (Settings URL):**
+  `https://YOUR_DOMAIN/settings`
+
+*(يمكنك نسخ هذه الروابط مباشرة من صفحة الإعدادات داخل التطبيق)*
+
+### 2. الصلاحيات المطلوبة (Scopes)
+في خيارات الـ Scopes بمتجر سلة، يجب تفعيل الصلاحيات التالية:
+- **`products.read`** (أساسية لجلب المنتجات)
+- **`products.read_write`** (مطلوبة فقط عند رغبة التاجر في تطبيق التحديثات مباشرة على متجره)
+- **`offline_access`** (مطلوبة لتجديد التوكن تلقائياً عند انتهاء صلاحيته)
+
+---
+
+## رابعاً: طريقة النشر على Vercel
+
+تطبيق بروز جاهز تماماً للنشر على منصة **Vercel** باتباع الخطوات التالية:
+
+1. ارفع المشروع على حسابك في GitHub أو GitLab.
+2. اذهب إلى لوحة التحكم في Vercel واضغط على **Add New > Project**.
+3. استورد المستودع الخاص بالمشروع.
+4. في نافذة **Environment Variables**، أضف كافة المتغيرات المذكورة أعلاه مع جعل `MOCK_MODE=false` وربط قاعدة بيانات PostgreSQL (مثل Neon.tech).
+5. **ملاحظة فنية هامة:** نظراً لوجود أحرف عربية في اسم المجلد الافتراضي لبعض بيئات التطوير، قد يفشل المحزم الافتراضي Turbopack في النشر. يرجى ضبط خيار البناء (Build Command) في Vercel إلى:
+   ```bash
+   next build --webpack
+   ```
+   *(تم ضبط البناء افتراضياً ليتوافق مع Webpack في النشر عند الحاجة)*.
+6. اضغط على **Deploy** وسيكون التطبيق متاحاً على رابطك الخاص.

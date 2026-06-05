@@ -1,0 +1,78 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Merchant {
+  id                    String                @id @default(uuid())
+  sallaMerchantId       String                @unique
+  storeName             String
+  accessTokenEncrypted  String
+  refreshTokenEncrypted String
+  tokenExpiresAt        DateTime
+  hasWriteAccess        Boolean               @default(false)
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  products              Product[]
+  history               OptimizationHistory[]
+  webhookEvents         WebhookEvent[]
+}
+
+model Product {
+  id             String                @id @default(uuid())
+  merchantId     String
+  merchant       Merchant              @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  sallaProductId String
+  name           String
+  description    String
+  price          Float?
+  imageUrl       String?
+  categoryName   String?
+  seoScore       Int                   @default(0)
+  analysisStatus String                @default("pending") // pending | analyzed | failed
+  lastError      String?
+  lastAnalyzedAt DateTime?
+  rawJson        Json
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  history        OptimizationHistory[]
+
+  @@unique([merchantId, sallaProductId])
+}
+
+model OptimizationHistory {
+  id                          String    @id @default(uuid())
+  merchantId                  String
+  merchant                    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  productId                   String
+  product                     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  mode                        String    // description | seo | both
+  oldTitle                    String
+  oldDescription              String
+  suggestedTitle              String
+  suggestedShortDescription   String
+  suggestedDescription        String
+  suggestedMetaTitle          String
+  suggestedMetaDescription    String
+  suggestedKeywordsJson       Json      // string[]
+  suggestedAltTextJson        Json      // string[]
+  seoNotesJson                Json      // string[]
+  beforeScore                 Int
+  afterScore                  Int
+  appliedToSalla              Boolean   @default(false)
+  createdAt                   DateTime  @default(now())
+}
+
+model WebhookEvent {
+  id           String    @id @default(uuid())
+  merchantId   String?
+  merchant     Merchant? @relation(fields: [merchantId], references: [id], onDelete: SetNull)
+  eventName    String
+  payloadJson  Json
+  processed    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+}
