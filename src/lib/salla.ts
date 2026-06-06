@@ -51,6 +51,16 @@ export function validateEnv() {
   }
 }
 
+function getSallaRedirectUri(): string {
+  const appUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://pi-livid-65.vercel.app';
+
+  return (
+    process.env.SALLA_REDIRECT_URI ||
+    `${appUrl.replace(/\/$/, '')}/api/salla/callback`
+  );
+}
+
 export function getSallaAuthUrl(writeAccess = false, state = ''): string {
   validateEnv();
   
@@ -60,8 +70,7 @@ export function getSallaAuthUrl(writeAccess = false, state = ''): string {
   }
 
   const clientId = process.env.SALLA_CLIENT_ID;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://pi-livid-65.vercel.app';
-  const redirectUri = encodeURIComponent(process.env.SALLA_REDIRECT_URI || `${appUrl}/api/salla/callback`);
+  const redirectUri = encodeURIComponent(getSallaRedirectUri());
   const authBase = process.env.SALLA_AUTH_URL || 'https://accounts.salla.sa/oauth2/auth';
   
   const scopes = writeAccess 
@@ -87,7 +96,6 @@ export async function exchangeCodeForTokens(code: string): Promise<SallaTokenRes
   }
 
   const tokenUrl = process.env.SALLA_TOKEN_URL || 'https://accounts.salla.sa/oauth2/token';
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://pi-livid-65.vercel.app';
   const response = await fetch(tokenUrl, {
     method: 'POST',
     headers: {
@@ -98,7 +106,7 @@ export async function exchangeCodeForTokens(code: string): Promise<SallaTokenRes
       client_secret: process.env.SALLA_CLIENT_SECRET || '',
       grant_type: 'authorization_code',
       code: code,
-      redirect_uri: process.env.SALLA_REDIRECT_URI || `${appUrl}/api/salla/callback`,
+      redirect_uri: getSallaRedirectUri(),
     }),
   });
 
