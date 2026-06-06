@@ -65,47 +65,9 @@ export default function ProductsListClient({ storeName }: ProductsListClientProp
   );
 
   return (
-    <div className="min-h-screen bg-bg-light flex flex-col">
-      {/* Navbar */}
-      <header className="bg-navy text-white sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-xl font-extrabold tracking-tight">
-              بروز <span className="text-primary">.</span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6 text-sm">
-              <Link href="/dashboard" className="text-slate-300 hover:text-white transition-colors">لوحة التحكم</Link>
-              <Link href="/dashboard/products" className="text-white font-bold border-b-2 border-primary pb-1">المنتجات</Link>
-              <Link href="/settings" className="text-slate-300 hover:text-white transition-colors">الإعدادات</Link>
-            </nav>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <span className="text-xs sm:text-sm text-slate-300 bg-navy-light px-3 py-1.5 rounded-lg border border-slate-700">
-              {storeName}
-            </span>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <main className="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        {/* Mobile Navigation */}
-        <div className="flex md:hidden items-center justify-around bg-white border border-slate-200 p-3 rounded-xl mb-6 shadow-sm">
-          <Link href="/dashboard" className="text-slate-gray text-xs flex flex-col items-center gap-1">
-            <LayoutGrid className="w-4 h-4" /> لوحة التحكم
-          </Link>
-          <Link href="/dashboard/products" className="text-primary font-bold text-xs flex flex-col items-center gap-1">
-            <Database className="w-4 h-4" /> المنتجات
-          </Link>
-          <Link href="/settings" className="text-slate-gray text-xs flex flex-col items-center gap-1">
-            <Settings className="w-4 h-4" /> الإعدادات
-          </Link>
-        </div>
-
-        {/* Header Title */}
-        <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="max-w-5xl w-full mx-auto py-2">
+      {/* Header Title */}
+      <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-2xl font-black text-navy">منتجات متجر سلة</h1>
             <p className="text-sm text-slate-gray mt-1">
@@ -254,14 +216,6 @@ export default function ProductsListClient({ storeName }: ProductsListClientProp
             </div>
           )
         )}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-gray">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p>بروز لشركاء سله &copy; {new Date().getFullYear()}</p>
-        </div>
-      </footer>
     </div>
   );
 }

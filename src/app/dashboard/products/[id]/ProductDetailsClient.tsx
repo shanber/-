@@ -90,29 +90,8 @@ export default function ProductDetailsClient({
   };
 
   return (
-    <div className="min-h-screen bg-bg-light flex flex-col">
-      {/* Navbar */}
-      <header className="bg-navy text-white h-16 sticky top-0 z-40 flex items-center shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/dashboard/products" 
-              className="text-slate-400 hover:text-white p-2 rounded-lg transition-colors"
-            >
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <span className="font-extrabold text-base">تحسين المنتج بالذكاء الاصطناعي</span>
-          </div>
-          <span className="text-xs text-slate-300 bg-navy-light px-3 py-1.5 rounded-lg border border-slate-700">
-            {storeName}
-          </span>
-        </div>
-      </header>
-
-      {/* Main Layout */}
-      <main className="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        {/* Back Link & Info */}
+    <div className="max-w-5xl w-full mx-auto py-2">
+      {/* Back Link & Info */}
         <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-xl font-black text-navy">{product.name}</h2>
@@ -373,14 +352,6 @@ export default function ProductDetailsClient({
           </div>
 
         </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-gray">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p>بروز لشركاء سله &copy; {new Date().getFullYear()}</p>
-        </div>
-      </footer>
     </div>
   );
 }
